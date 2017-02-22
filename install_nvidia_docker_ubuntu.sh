@@ -19,6 +19,5 @@ wget -P /tmp https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.0/nv
 sudo dpkg -i /tmp/nvidia-docker*.deb && rm /tmp/nvidia-docker*.deb
 
 sudo apt install -y nvidia-modprobe
-#sudo -b nohup nvidia-docker-plugin
-sudo reboot
+
 
