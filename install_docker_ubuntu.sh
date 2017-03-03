@@ -1,18 +1,33 @@
 #!/bin/sh
+# Install Docker 1.13.1 on Ubuntu
 
 sudo apt-get update
-sudo apt-get -y install curl
-curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
-apt-key fingerprint 58118E89F3A912897C070ADBF76221572C52609D
-sudo apt-get -y install software-properties-common
-sudo add-apt-repository \
-       "deb https://apt.dockerproject.org/repo/ \
-       ubuntu-$(lsb_release -cs) \
-       main"
-sudo apt-get update
-sudo apt-get -y install docker-engine
+LINUX_VERSION=$(lsb_release -cs 2>/dev/null)
+if [[ -z "$LINUX_VERSION" ]]; then
+	echo "Not supported Linux version $LINUX_VERSION"
+	exit 1
+fi
+
+case "$LINUX_VERSION" in
+	xenial)
+		link="https://apt.dockerproject.org/repo/pool/main/d/docker-engine/docker-engine_1.13.1-0~ubuntu-xenial_amd64.deb";
+		;;
+	trusty)
+		link="https://apt.dockerproject.org/repo/pool/main/d/docker-engine/docker-engine_1.13.1-0~ubuntu-trusty_amd64.deb";
+		;;
+	precise)
+		link="https://apt.dockerproject.org/repo/pool/main/d/docker-engine/docker-engine_1.13.1-0~ubuntu-precise_amd64.deb"
+		;;
+esac
+
+if [[ -z "$link" ]]; then
+	echo "Not supported Linux version $LINUX_VERSION"
+	exit 1
+fi
+
+wget $link
+filename=${link##*/}
+echo "Installing  Docker 1.13.1"
+sudo dpkg -i $filename
+sudo apt-get install -f -y
 sudo usermod -aG docker ubuntu
-
-# Add GatewayPorts yes to /etc/ssh/sshd_config
-sudo /bin/sh -c 'echo "GatewayPorts yes" >> /etc/ssh/sshd_config'
-sudo /etc/init.d/ssh restart

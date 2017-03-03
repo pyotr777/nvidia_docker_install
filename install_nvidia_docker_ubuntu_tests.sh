@@ -18,4 +18,4 @@ nvidia-docker run --rm nvidia/cuda nvidia-smi
 echo "Build device-query:"
 nvidia-docker build --rm -f Dockerfile -t device-query .
 echo "Run device-query:"
-nvidia-docker run --rm -ti device-query
+nvidia-docker run --rm device-query
