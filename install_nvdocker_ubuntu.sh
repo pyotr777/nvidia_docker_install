@@ -11,7 +11,7 @@ fi
 
 echo "Installing nvidia-docker on $1"
 scp * $1:
-ssh $1 ./install_nvidia_docker_ubuntu.sh
+ssh $1 ./nvidia_docker_ubuntu.sh
 
 echo "Running tests"
-ssh $1 ./install_nvidia_docker_ubuntu_tests.sh
+ssh $1 ./nvidia_docker_ubuntu_tests.sh
