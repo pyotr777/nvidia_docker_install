@@ -9,7 +9,7 @@ sudo apt-get install -y nvidia-cuda-toolkit
 nvcc --version
 
 # Install Docker
-./install_docker_ubuntu.sh
+./docker_ubuntu.sh
 
 # Add user ubuntu to docker group
 sudo usermod -aG docker ubuntu
