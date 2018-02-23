@@ -1,21 +1,21 @@
 #!/bin/bash
 # Install Nvidia-docker on Ubuntu EC2 instance (tested on P2).
+# Docker and CUDA must be installed.
 
-sudo apt-get update
-sudo apt install -y nvidia-modprobe
-
-# Install Cuda
-sudo apt-get install -y nvidia-cuda-toolkit
 nvcc --version
 
-# Install Docker
-./docker_ubuntu.sh
+docker version
 
-# Add user ubuntu to docker group
-sudo usermod -aG docker ubuntu
-docker --version
+# Install nvidia-docker 2 on x86_64 Xenial Ubuntu
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+sudo apt-get update
 
-# Install nvidia-docker and nvidia-docker-plugin
-wget -P /tmp https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.0/nvidia-docker_1.0.0-1_amd64.deb
-sudo dpkg -i /tmp/nvidia-docker*.deb && rm /tmp/nvidia-docker*.deb
+# Install nvidia-docker2 and reload the Docker daemon configuration
+sudo apt-get install -y nvidia-docker2
+sudo pkill -SIGHUP dockerd
+
+# Test nvidia-smi with the latest official CUDA image
+docker run --runtime=nvidia --rm nvidia/cuda nvidia-smi
+
 
